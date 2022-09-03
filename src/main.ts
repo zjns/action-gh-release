@@ -65,14 +65,16 @@ async function run() {
       if (files.length == 0) {
         console.warn(`🤔 ${config.input_files} not include valid file.`);
       }
+      const fileLabels = config.input_file_labels ?? [];
       const currentAssets = rel.assets;
       const assets = await Promise.all(
-        files.map(async path => {
+        files.map(async (path: string, idx: number) => {
           const json = await upload(
             config,
             gh,
             uploadUrl(rel.upload_url),
             path,
+            fileLabels.length > idx ? fileLabels[idx] : "",
             currentAssets
           );
           delete json.uploader;

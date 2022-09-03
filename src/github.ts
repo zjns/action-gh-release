@@ -141,6 +141,7 @@ export const upload = async (
   github: GitHub,
   url: string,
   path: string,
+  label: string,
   currentAssets: Array<{ id: number; name: string }>
 ): Promise<any> => {
   const [owner, repo] = config.github_repository.split("/");
@@ -159,6 +160,9 @@ export const upload = async (
   console.log(`⬆️ Uploading ${name}...`);
   const endpoint = new URL(url);
   endpoint.searchParams.append("name", name);
+  if (label.length != 0) {
+    endpoint.searchParams.append("label", label);
+  }
   const resp = await fetch(endpoint, {
     headers: {
       "content-length": `${size}`,

@@ -12,6 +12,7 @@ export interface Config {
   input_body?: string;
   input_body_path?: string;
   input_files?: string[];
+  input_file_labels?: string[];
   input_draft?: boolean;
   input_prerelease?: boolean;
   input_fail_on_unmatched_files?: boolean;
@@ -50,6 +51,10 @@ export const parseInputFiles = (files: string): string[] => {
   );
 };
 
+export const parseInputFileLabels = (labels: string): string[] => {
+  return labels.split(",").map(v => v.trim());
+};
+
 export const parseConfig = (env: Env): Config => {
   return {
     github_token: env.GITHUB_TOKEN || env.INPUT_TOKEN || "",
@@ -60,6 +65,7 @@ export const parseConfig = (env: Env): Config => {
     input_body: env.INPUT_BODY,
     input_body_path: env.INPUT_BODY_PATH,
     input_files: parseInputFiles(env.INPUT_FILES || ""),
+    input_file_labels: parseInputFileLabels(env.INPUT_FILE_LABELS || ""),
     input_draft: env.INPUT_DRAFT ? env.INPUT_DRAFT === "true" : undefined,
     input_prerelease: env.INPUT_PRERELEASE
       ? env.INPUT_PRERELEASE == "true"
